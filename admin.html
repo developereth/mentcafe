@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Menata Café</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',sans-serif;background:#0d0d0d;color:#fff;padding:20px}
+        .container{max-width:900px;margin:0 auto}
+        .login-box{background:#1a1a1a;padding:40px;border-radius:15px;max-width:400px;margin:100px auto;text-align:center;border:1px solid #333}
+        .login-box h2{color:#C8A96E;margin-bottom:20px}
+        .login-box input{width:100%;padding:14px;background:#222;border:1px solid #333;border-radius:8px;color:#fff;font-size:1rem;text-align:center;margin-bottom:15px}
+        .hidden{display:none!important}
+        h1{color:#C8A96E;margin-bottom:20px;font-size:1.8rem;text-align:center}
+        .card{background:#1a1a1a;padding:25px;border-radius:12px;margin-bottom:25px;border:1px solid #333}
+        h2{color:#C8A96E;margin-bottom:15px}
+        .row{display:flex;gap:12px;margin-bottom:12px}.row>*{flex:1}
+        input,select{width:100%;padding:12px;background:#222;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:12px}
+        button{padding:12px 24px;border:none;border-radius:8px;cursor:pointer;font-weight:bold}
+        .btn-gold{background:#C8A96E;color:#000}.btn-red{background:#c0392b;color:#fff}.btn-green{background:#27ae60;color:#fff}
+        .item-row{display:flex;align-items:center;gap:15px;padding:12px;background:#1a1a1a;border-radius:8px;margin-bottom:8px;border:1px solid #333}
+        .item-row .info{flex:1}.item-row .info h3{color:#C8A96E;font-size:0.9rem}.item-row .info p{color:#888;font-size:0.75rem}
+        .msg{padding:12px;margin:10px 0;border-radius:8px;display:none;text-align:center;font-weight:600}
+        .msg.success{background:#27ae60;display:block}.msg.error{background:#c0392b;display:block}
+        .search-box{width:100%;padding:12px;background:#222;border:2px solid #C8A96E;border-radius:25px;color:#fff;margin-bottom:15px}
+        @media(max-width:600px){.row{flex-direction:column}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="loginScreen" class="login-box"><h2>Admin Login</h2><input type="password" id="pw" placeholder="Password"><button class="btn-gold" onclick="login()">Access</button></div>
+    <div id="panel" class="hidden">
+        <h1>Menata Café Admin</h1>
+        <div class="card">
+            <h2>Add Menu Item</h2>
+            <div class="row"><input type="text" id="name" placeholder="Item Name *"><input type="number" id="price" placeholder="Price *"></div>
+            <select id="category"><option value="wrap">Wrap</option><option value="burger">Burger</option><option value="pizza">Pizza</option><option value="breakfast">Breakfast</option><option value="spaghetti">Spaghetti</option><option value="enjera">Enjera</option><option value="coffee">Coffee</option><option value="cool">Stay Cool</option><option value="mojito">Mojito</option><option value="juice">Juices</option></select>
+            <div class="row"><input type="text" id="desc" placeholder="Description"><input type="text" id="image" placeholder="Image URL"></div>
+            <input type="text" id="tag" placeholder="Tag: Popular, New, Spicy...">
+            <button class="btn-gold" onclick="add()">Add Item</button><div id="msg" class="msg"></div>
+        </div>
+        <div class="card">
+            <h2>Menu Items</h2>
+            <input type="text" class="search-box" placeholder="Search..." id="search" oninput="render()">
+            <div id="list">Loading...</div>
+        </div>
+    </div>
+</div>
+<script>
+var API='YOUR_WORKER_URL/api/menu',PASS='Menata2026',items=[];
+function login(){if(document.getElementById('pw').value===PASS){document.getElementById('loginScreen').classList.add('hidden');document.getElementById('panel').classList.remove('hidden');load()}else{alert('Wrong password')}}
+async function load(){var r=await fetch(API);var d=await r.json();items=d.items||[];render()}
+function render(){var s=(document.getElementById('search')?.value||'').toLowerCase();var f=s?items.filter(i=>i.name.toLowerCase().includes(s)):items;var c=document.getElementById('list');if(!f.length){c.innerHTML='<p style="text-align:center;color:#888;padding:30px">No items</p>';return}c.innerHTML=f.map(i=>'<div class="item-row"><div class="info"><h3>'+i.name+'</h3><p>'+i.price+' ETB | '+i.category+' | '+(i.tag||'')+'</p></div><button class="btn-red" onclick="del('+i.id+')">Delete</button></div>').join('')}
+async function add(){var n=document.getElementById('name').value.trim(),p=document.getElementById('price').value.trim(),cat=document.getElementById('category').value;if(!n||!p){msg('Fill required fields','error');return}await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,price:parseInt(p),category:cat,description:document.getElementById('desc').value,image:document.getElementById('image').value,tag:document.getElementById('tag').value})});msg('Added!','success');['name','price','desc','image','tag'].forEach(id=>document.getElementById(id).value='');load()}
+async function del(id){if(!confirm('Delete?'))return;await fetch(API+'/'+id,{method:'DELETE'});load()}
+function msg(t,type){var m=document.getElementById('msg');m.textContent=t;m.className='msg '+type;setTimeout(()=>m.className='msg',3000)}
+</script>
+</body>
+</html>
