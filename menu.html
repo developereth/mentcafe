@@ -4,55 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu | Menata Café</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--gold:#C8A96E;--dark:#1a1a1a;--bg:#0d0d0d}
+        :root{--green:#2E7D32;--green-light:#4CAF50;--green-dark:#1B5E20;--bg:#0d0d0d;--dark:#1a1a1a}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff}
-        nav{background:var(--dark);padding:12px 20px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center}
-        .logo-circle{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);overflow:hidden;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--dark);font-size:0.7rem;text-decoration:none}
-        .nav-links{display:flex;gap:20px;list-style:none}
-        .nav-links a{color:#bbb;text-decoration:none;font-size:0.85rem}.nav-links a:hover,.nav-links a.active{color:var(--gold)}
-        .menu-btn{display:none;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
-        .side-nav{position:fixed;top:0;right:-280px;width:280px;height:100vh;background:var(--dark);z-index:1002;transition:0.3s;padding:60px 30px;border-left:1px solid #333}
-        .side-nav.show{right:0}.side-nav a{display:block;color:#bbb;text-decoration:none;padding:12px 0;font-size:1rem;border-bottom:1px solid #222}
-        .side-nav .close-btn{position:absolute;top:15px;right:20px;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
-        .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1001}.overlay.show{display:block}
-        .header{background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.5)),url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600') center/cover;padding:60px 20px;text-align:center}
-        .header h1{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold)}.header a{color:var(--gold)}
-        .container{max-width:900px;margin:0 auto;padding:20px 15px}
-        .filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:25px}
-        .filters button{padding:8px 16px;border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:20px;cursor:pointer;font-size:0.8rem;font-weight:600}
-        .filters button.active{background:var(--gold);color:var(--dark)}
-        .menu-section{margin-bottom:30px}
-        .menu-section h2{color:var(--gold);font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:15px;padding-bottom:8px;border-bottom:1px solid #333}
-        .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-        .menu-item{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:var(--dark);border-radius:8px;border:1px solid #222}
-        .menu-item .name{font-weight:500}.menu-item .price{color:var(--gold);font-weight:700;font-size:1.1rem;white-space:nowrap}
-        .menu-item .desc{color:#888;font-size:0.75rem}
-        footer{background:var(--dark);text-align:center;padding:30px;border-top:1px solid #222;margin-top:40px}
-        footer .footer-logo{width:50px;height:50px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--dark);margin:0 auto 10px}
-        footer p{color:#888;font-size:0.8rem;margin:5px 0}
-        .footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:10px 0}.footer-links a{color:#888;text-decoration:none;font-size:0.8rem}
-        .powered{color:#666;font-size:0.7rem;margin-top:10px}.powered a{color:#888}
-        @media(max-width:768px){.nav-links{display:none}.menu-btn{display:block}.menu-grid{grid-template-columns:1fr}}
+        nav{background:var(--dark);padding:12px 20px;border-bottom:2px solid var(--green-light);position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center}
+        .logo-circle{width:44px;height:44px;border-radius:50%;border:2px solid var(--green-light);background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:1.2rem;text-decoration:none}
+        .nav-links{display:flex;gap:24px;list-style:none}
+        .nav-links a{color:#bbb;text-decoration:none;font-size:0.9rem;font-weight:500;transition:.3s}
+        .nav-links a:hover,.nav-links a.active{color:var(--green-light)}
+        .menu-btn{display:none;background:none;border:none;color:var(--green-light);font-size:1.7rem;cursor:pointer}
+        .side-nav{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--dark);z-index:1002;transition:.35s;padding:70px 30px 30px;border-left:1px solid #333}
+        .side-nav.show{right:0}
+        .side-nav a{display:block;color:#ccc;text-decoration:none;padding:14px 0;font-size:1.1rem;border-bottom:1px solid #2a2a2a}
+        .side-nav a:hover{color:var(--green-light)}
+        .side-nav .close-btn{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--green-light);font-size:1.8rem;cursor:pointer}
+        .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:1001}
+        .overlay.show{display:block}
+        .section{padding:60px 20px;max-width:1100px;margin:0 auto}
+        .section-title{font-family:'Playfair Display',serif;font-size:2.4rem;text-align:center;margin-bottom:40px}
+        .section-title span{color:var(--green-light)}
+        .menu-category{margin-bottom:40px}
+        .menu-category h3{font-size:1.5rem;color:var(--green-light);margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--green-dark);display:flex;align-items:center;gap:10px}
+        .menu-category h3 i{font-size:1.3rem}
+        .menu-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+        .menu-item{background:var(--dark);padding:16px 20px;border-radius:12px;border:1px solid #2a2a2a;display:flex;justify-content:space-between;align-items:center;transition:.3s}
+        .menu-item:hover{border-color:var(--green);background:#1a2a1a}
+        .menu-item .name{font-weight:500;font-size:0.95rem}
+        .menu-item .price{color:var(--green-light);font-weight:700;font-size:1.1rem;white-space:nowrap}
+        .promo{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;text-align:center;padding:18px 20px;border-radius:50px;margin:20px 0;font-weight:600}
+        footer{background:var(--dark);text-align:center;padding:35px 20px;border-top:1px solid #222;margin-top:40px}
+        footer .footer-logo{width:50px;height:50px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;margin:0 auto 12px;font-size:1.3rem}
+        footer p{color:#888;font-size:0.85rem;margin:8px 0}
+        .footer-links{display:flex;gap:25px;justify-content:center;flex-wrap:wrap;margin:15px 0}
+        .footer-links a{color:#aaa;text-decoration:none;font-size:0.85rem}
+        .footer-links a:hover{color:var(--green-light)}
+        .powered{color:#777;font-size:0.75rem;margin-top:15px}
+        .powered a{color:#aaa;text-decoration:none}
+        @media(max-width:768px){.nav-links{display:none}.menu-btn{display:block}.menu-items{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
-<nav><a href="index.html" class="logo-circle">M</a><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="menu.html" class="active">Menu</a></li><li><a href="catering.html">Catering</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="contact.html">Contact</a></li></ul><button class="menu-btn" onclick="openMenu()"><i class="fas fa-bars"></i></button></nav>
+<nav>
+    <a href="index.html" class="logo-circle">M</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html" class="active">Menu</a></li>
+        <li><a href="catering.html">Catering</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="menu-btn" onclick="openMenu()"><i class="fas fa-bars"></i></button>
+</nav>
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
-<div class="side-nav" id="sideNav"><button class="close-btn" onclick="closeMenu()"><i class="fas fa-times"></i></button><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div>
-<div class="header"><h1>Our Menu</h1><p><a href="index.html">Home</a> / Menu</p></div>
-<div class="container"><div class="filters"><button class="active" onclick="filter('all')">All</button><button onclick="filter('wrap')">Wrap</button><button onclick="filter('burger')">Burger</button><button onclick="filter('pizza')">Pizza</button><button onclick="filter('breakfast')">Breakfast</button><button onclick="filter('spaghetti')">Spaghetti</button><button onclick="filter('enjera')">Enjera</button><button onclick="filter('coffee')">Coffee</button><button onclick="filter('cool')">Stay Cool</button><button onclick="filter('mojito')">Mojito</button><button onclick="filter('juice')">Juices</button></div><div id="menuContainer">Loading...</div></div>
-<footer><div class="footer-logo">M</div><div class="footer-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div><p>© 2026 Menata Café. All rights reserved.</p><p class="powered">Powered by <a href="https://addispower.pages.dev" target="_blank">AddisPower</a></p></footer>
+<div class="side-nav" id="sideNav">
+    <button class="close-btn" onclick="closeMenu()"><i class="fas fa-times"></i></button>
+    <a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Our <span>Menu</span></h2>
+    <div id="menuContainer"></div>
+    <div class="promo">📸 Share your brunch on social media & get <strong>5% discount!</strong> @menata_cafe</div>
+</div>
+
+<footer>
+    <div class="footer-logo">M</div>
+    <div class="footer-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div>
+    <p>© 2026 Menata Café. All rights reserved.</p>
+    <p class="powered">Powered by <a href="https://addispower.pages.dev" target="_blank">AddisPower</a></p>
+</footer>
+
 <script>
 function openMenu(){document.getElementById('sideNav').classList.add('show');document.getElementById('overlay').classList.add('show')}
 function closeMenu(){document.getElementById('sideNav').classList.remove('show');document.getElementById('overlay').classList.remove('show')}
-var all=[],cat="all";
-fetch("YOUR_WORKER_URL/api/menu").then(r=>r.json()).then(d=>{all=d.items||[];show()});
-function filter(c){cat=c;document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');show()}
-function show(){var f=cat==="all"?all:all.filter(i=>i.category===cat);var c=document.getElementById('menuContainer');if(!f.length){c.innerHTML='<p style="text-align:center;color:#888;padding:40px">No items found</p>';return}var cats={};f.forEach(i=>{if(!cats[i.category])cats[i.category]=[];cats[i.category].push(i)});var h='';for(var k in cats){h+='<div class="menu-section"><h2>'+k.toUpperCase()+'</h2><div class="menu-grid">';cats[k].forEach(i=>{h+='<div class="menu-item"><div><div class="name">'+i.name+'</div>'+(i.desc?'<div class="desc">'+i.desc+'</div>':'')+'</div><div class="price">'+i.price+' ETB</div></div>'});h+='</div></div>'}c.innerHTML=h}
+
+// EDITABLE MENU DATA - Change items here or via admin.html
+const menuData = {
+    food: {
+        "WRAP": [
+            {name:"Chicken Wrap",price:495},
+            {name:"Beef Wrap",price:495},
+            {name:"Tuna Wrap",price:400},
+            {name:"Vegetable Wrap",price:300}
+        ],
+        "BURGER": [
+            {name:"Special Burger",price:695},
+            {name:"Cheese Burger",price:540},
+            {name:"Beef Burger",price:495}
+        ],
+        "PIZZA": [
+            {name:"Menata Pizza",price:695},
+            {name:"Beef Pizza",price:650},
+            {name:"Chicken Pizza",price:650},
+            {name:"Tuna Pizza",price:495},
+            {name:"Vegetable Pizza",price:400}
+        ],
+        "WAKE UP CALL": [
+            {name:"Chechebsa",price:300},
+            {name:"Fetira",price:350},
+            {name:"Full",price:250},
+            {name:"Scrambled Egg",price:280},
+            {name:"Egg Sandwich",price:300}
+        ],
+        "SPAGHETTI": [
+            {name:"Tuna Pasta",price:380},
+            {name:"Pasta with Meat",price:400},
+            {name:"Vegetable Pasta",price:280},
+            {name:"Pasta with Tomato Sauce",price:280}
+        ],
+        "ENJERA": [
+            {name:"Shiro",price:380},
+            {name:"Fasting Firfir",price:300},
+            {name:"Tibs Firfir",price:450},
+            {name:"Quanta Firfir",price:480}
+        ]
+    },
+    drinks: {
+        "ESPRESSO LAB": [
+            {name:"Macchiato",price:130},
+            {name:"Café Latte",price:180},
+            {name:"Espresso",price:90},
+            {name:"Americano",price:90},
+            {name:"Cappuccino",price:200},
+            {name:"Tea",price:65},
+            {name:"Ginger Tea",price:70},
+            {name:"Lemon Tea",price:70},
+            {name:"Green Tea",price:70}
+        ],
+        "STAY COOL": [
+            {name:"Iced Caramel Latte",price:340},
+            {name:"Iced Chocolate",price:340},
+            {name:"Strawberry Iced",price:340},
+            {name:"Cinnamon Iced Latte",price:400},
+            {name:"Iced Coffee",price:250}
+        ],
+        "MINT & LIME": [
+            {name:"Classic Virgin Mojito",price:400},
+            {name:"Strawberry Mojito",price:380},
+            {name:"Mango Mojito",price:350},
+            {name:"Pineapple Mojito",price:350}
+        ],
+        "JUICES": [
+            {name:"Menata Mango",price:450},
+            {name:"Mix Smoothie",price:450},
+            {name:"Banana Date Protein",price:450},
+            {name:"Avocado",price:280},
+            {name:"Pineapple",price:300},
+            {name:"Papaya",price:280},
+            {name:"Mango",price:300}
+        ]
+    }
+};
+
+const icons = {
+    "WRAP":"fa-solid fa-burrito",
+    "BURGER":"fa-solid fa-burger",
+    "PIZZA":"fa-solid fa-pizza-slice",
+    "WAKE UP CALL":"fa-solid fa-sun",
+    "SPAGHETTI":"fa-solid fa-utensils",
+    "ENJERA":"fa-solid fa-plate-wheat",
+    "ESPRESSO LAB":"fa-solid fa-mug-hot",
+    "STAY COOL":"fa-solid fa-snowflake",
+    "MINT & LIME":"fa-solid fa-lemon",
+    "JUICES":"fa-solid fa-blender"
+};
+
+function renderMenu(){
+    let html='<h3 style="color:var(--green-light);font-size:2rem;margin-bottom:30px;text-align:center">🍽️ Food Menu</h3>';
+    for(let[cat,items] of Object.entries(menuData.food)){
+        html+=`<div class="menu-category"><h3><i class="${icons[cat]||'fa-solid fa-utensils'}"></i> ${cat}</h3><div class="menu-items">`;
+        items.forEach(i=>{html+=`<div class="menu-item"><span class="name">${i.name}</span><span class="price">${i.price} ETB</span></div>`});
+        html+='</div></div>';
+    }
+    html+='<h3 style="color:var(--green-light);font-size:2rem;margin:40px 0 30px;text-align:center">🥤 Drinks Menu</h3>';
+    for(let[cat,items] of Object.entries(menuData.drinks)){
+        html+=`<div class="menu-category"><h3><i class="${icons[cat]||'fa-solid fa-martini-glass'}"></i> ${cat}</h3><div class="menu-items">`;
+        items.forEach(i=>{html+=`<div class="menu-item"><span class="name">${i.name}</span><span class="price">${i.price} ETB</span></div>`});
+        html+='</div></div>';
+    }
+    document.getElementById('menuContainer').innerHTML=html;
+}
+
+// Load saved menu from localStorage if exists
+const saved=localStorage.getItem('menataMenu');
+if(saved){try{Object.assign(menuData,JSON.parse(saved))}catch(e){}}
+renderMenu();
 </script>
 </body>
 </html>
