@@ -9,9 +9,12 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{--green:#2E7D32;--green-light:#4CAF50;--green-dark:#1B5E20;--bg:#0d0d0d;--dark:#1a1a1a}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;line-height:1.5}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;line-height:1.5;scroll-behavior:smooth}
+        
+        /* Main Navigation */
         nav{background:var(--dark);padding:12px 20px;border-bottom:2px solid var(--green-light);position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center}
-        .logo-circle{width:44px;height:44px;border-radius:50%;border:2px solid var(--green-light);background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:1.2rem;text-decoration:none}
+        .logo-circle{width:44px;height:44px;border-radius:50%;border:2px solid var(--green-light);background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:1.2rem;text-decoration:none;transition:0.3s}
+        .logo-circle:hover{background:var(--green-light)}
         .nav-links{display:flex;gap:24px;list-style:none}
         .nav-links a{color:#bbb;text-decoration:none;font-size:0.9rem;font-weight:500;transition:.3s}
         .nav-links a:hover,.nav-links a.active{color:var(--green-light)}
@@ -24,50 +27,103 @@
         .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:1001}
         .overlay.show{display:block}
 
-        .section{padding:60px 20px;max-width:1200px;margin:0 auto}
-        .section-title{font-family:'Playfair Display',serif;font-size:2.4rem;text-align:center;margin-bottom:40px}
+        /* ============================================ */
+        /* CATEGORY SUB-NAVIGATION */
+        /* ============================================ */
+        .sub-nav-container{position:sticky;top:68px;z-index:999;background:rgba(13,13,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid #222;padding:0}
+        .sub-nav-scroll{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 20px;scroll-behavior:smooth}
+        .sub-nav-scroll::-webkit-scrollbar{display:none}
+        
+        .sub-nav-item{flex-shrink:0;padding:14px 18px;color:#999;text-decoration:none;font-size:0.82rem;font-weight:500;transition:0.3s;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px;position:relative}
+        .sub-nav-item:hover{color:#fff;background:rgba(76,175,80,0.05)}
+        .sub-nav-item.active{color:var(--green-light);border-bottom-color:var(--green-light);background:rgba(76,175,80,0.08)}
+        .sub-nav-item .nav-dot{width:8px;height:8px;border-radius:50%;background:var(--green-light);opacity:0;transition:0.3s}
+        .sub-nav-item.active .nav-dot{opacity:1}
+        .sub-nav-item .nav-icon{font-size:0.9rem;width:18px;text-align:center}
+        
+        .sub-nav-divider{flex-shrink:0;width:1px;height:25px;background:#333;align-self:center;margin:0 8px}
+        .sub-nav-label{flex-shrink:0;padding:14px 8px;color:var(--green-light);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;display:flex;align-items:center}
+
+        .sub-nav-arrows{display:flex;position:absolute;right:0;top:0;height:100%}
+        .sub-nav-arrow{background:rgba(13,13,13,0.95);border:none;color:var(--green-light);padding:0 12px;cursor:pointer;font-size:1rem;transition:0.3s;z-index:2;display:none}
+        .sub-nav-arrow:hover{color:#fff;background:rgba(76,175,80,0.2)}
+        .sub-nav-arrow.left{border-right:1px solid #222}
+
+        /* ============================================ */
+        /* MENU CONTENT */
+        /* ============================================ */
+        .section{padding:40px 20px 60px;max-width:1300px;margin:0 auto}
+        .section-title{font-family:'Playfair Display',serif;font-size:2.8rem;text-align:center;margin-bottom:5px}
         .section-title span{color:var(--green-light)}
+        .section-sub{text-align:center;color:#999;margin-bottom:30px;font-size:1rem}
 
-        /* Category Header */
-        .menu-category{margin-bottom:50px}
-        .menu-category-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:15px;border-bottom:2px solid var(--green-dark)}
-        .menu-category-header img{width:60px;height:60px;border-radius:12px;object-fit:cover;border:2px solid var(--green)}
-        .menu-category-header h3{font-size:1.5rem;color:var(--green-light)}
-        .menu-category-header h3 i{margin-right:10px}
+        .menu-category{margin-bottom:60px;scroll-margin-top:140px}
+        .menu-category:target{animation:highlight 1.5s ease}
+        @keyframes highlight{0%{background:rgba(76,175,80,0.1)}100%{background:transparent}}
 
-        /* Menu Items Grid with Images */
-        .menu-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-        
-        .menu-card-item{background:var(--dark);border-radius:14px;overflow:hidden;border:1px solid #2a2a2a;transition:.3s;display:flex;align-items:center;gap:15px;padding-right:15px}
-        .menu-card-item:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 10px 25px rgba(46,125,50,0.2)}
-        
-        .menu-card-item .item-img{width:90px;height:90px;object-fit:cover;flex-shrink:0;border-right:2px solid #222}
-        .menu-card-item .item-img-placeholder{width:90px;height:90px;flex-shrink:0;background:linear-gradient(135deg,#1a2a1a,#0d1a0d);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--green-light);border-right:2px solid #222}
-        
-        .menu-card-item .item-info{flex:1;min-width:0}
-        .menu-card-item .item-name{font-weight:600;font-size:0.95rem;margin-bottom:6px;color:#fff}
-        .menu-card-item .item-price{color:var(--green-light);font-weight:700;font-size:1.1rem;display:inline-block;background:rgba(46,125,50,0.15);padding:4px 12px;border-radius:20px}
+        .category-header{display:flex;align-items:center;gap:20px;margin-bottom:30px;padding-bottom:20px;border-bottom:3px solid var(--green-dark)}
+        .category-header img{width:80px;height:80px;border-radius:16px;object-fit:cover;border:3px solid var(--green);box-shadow:0 5px 20px rgba(46,125,50,0.3)}
+        .category-header h3{font-size:1.8rem;color:var(--green-light);font-family:'Playfair Display',serif}
+        .category-header .item-count{background:var(--green);color:#fff;padding:5px 15px;border-radius:20px;font-size:0.85rem;font-weight:600}
 
-        .promo{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;text-align:center;padding:18px 20px;border-radius:50px;margin:20px 0;font-weight:600}
-        .section-divider{text-align:center;margin:40px 0;color:var(--green-light);font-size:2rem}
+        /* Menu Grid */
+        .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+        
+        .menu-card{background:var(--dark);border-radius:20px;overflow:hidden;border:1px solid #2a2a2a;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column}
+        .menu-card:hover{transform:translateY(-8px);border-color:var(--green);box-shadow:0 20px 40px rgba(46,125,50,0.25)}
+        
+        .menu-card .card-img-container{position:relative;overflow:hidden;height:220px}
+        .menu-card .card-img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease}
+        .menu-card:hover .card-img{transform:scale(1.1)}
+        .menu-card .card-img-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 50%);z-index:1}
+        .menu-card .card-category{position:absolute;top:15px;right:15px;background:var(--green);color:#fff;padding:5px 14px;border-radius:20px;font-size:0.7rem;text-transform:uppercase;font-weight:600;letter-spacing:1px;z-index:2}
+        
+        .menu-card .card-body{padding:20px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:15px}
+        .menu-card .card-name{font-size:1.15rem;font-weight:700;color:#fff;line-height:1.3}
+        .menu-card .card-footer{display:flex;justify-content:space-between;align-items:center}
+        .menu-card .card-price{color:var(--green-light);font-weight:800;font-size:1.5rem}
+        .menu-card .card-price small{font-size:0.8rem;color:#888;font-weight:400}
+        .menu-card .card-btn{background:var(--green);color:#fff;border:none;padding:8px 18px;border-radius:20px;cursor:pointer;font-weight:600;font-size:0.85rem;transition:0.3s}
+        .menu-card .card-btn:hover{background:var(--green-light)}
+
+        .promo{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;text-align:center;padding:25px 20px;border-radius:50px;margin:30px 0;font-weight:600;font-size:1.1rem}
+        .section-divider{text-align:center;margin:50px 0;color:var(--green-light);font-size:2.5rem}
+
+        /* Back to Top Button */
+        .back-to-top{position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;background:var(--green);color:#fff;border:none;cursor:pointer;font-size:1.2rem;z-index:998;transition:0.3s;opacity:0;visibility:hidden;box-shadow:0 5px 20px rgba(0,0,0,0.5)}
+        .back-to-top.show{opacity:1;visibility:visible}
+        .back-to-top:hover{background:var(--green-light);transform:translateY(-3px)}
 
         footer{background:var(--dark);text-align:center;padding:35px 20px;border-top:1px solid #222;margin-top:40px}
         footer .footer-logo{width:50px;height:50px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;margin:0 auto 12px;font-size:1.3rem}
         footer p{color:#888;font-size:0.85rem;margin:8px 0}
         .footer-links{display:flex;gap:25px;justify-content:center;flex-wrap:wrap;margin:15px 0}
-        .footer-links a{color:#aaa;text-decoration:none;font-size:0.85rem}
+        .footer-links a{color:#aaa;text-decoration:none;font-size:0.85rem;transition:0.3s}
         .footer-links a:hover{color:var(--green-light)}
-        .powered{color:#777;font-size:0.75rem;margin-top:15px}
-        .powered a{color:#aaa;text-decoration:none}
 
         @media(max-width:768px){
             .nav-links{display:none}
             .menu-btn{display:block}
-            .menu-items{grid-template-columns:1fr}
+            .section-title{font-size:2rem}
+            .sub-nav-item{padding:12px 14px;font-size:0.75rem}
+            .menu-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+            .menu-card .card-img-container{height:160px}
+            .menu-card .card-name{font-size:0.95rem}
+            .menu-card .card-price{font-size:1.2rem}
+            .category-header h3{font-size:1.3rem}
+            .category-header img{width:50px;height:50px}
+            .back-to-top{bottom:20px;right:20px;width:40px;height:40px;font-size:1rem}
+        }
+        @media(max-width:480px){
+            .menu-grid{grid-template-columns:1fr}
+            .menu-card .card-img-container{height:200px}
+            .sub-nav-item{padding:10px 12px;font-size:0.7rem;gap:4px}
         }
     </style>
 </head>
 <body>
+
+<!-- Main Navigation -->
 <nav>
     <a href="index.html" class="logo-circle">M</a>
     <ul class="nav-links">
@@ -82,30 +138,47 @@
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 <div class="side-nav" id="sideNav">
     <button class="close-btn" onclick="closeMenu()"><i class="fas fa-times"></i></button>
-    <a href="index.html">Home</a>
-    <a href="menu.html">Menu</a>
-    <a href="catering.html">Catering</a>
-    <a href="reviews.html">Reviews</a>
-    <a href="contact.html">Contact</a>
+    <a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a>
 </div>
 
+<!-- ============================================ -->
+<!-- CATEGORY SUB-NAVIGATION -->
+<!-- ============================================ -->
+<div class="sub-nav-container" id="subNav">
+    <button class="sub-nav-arrow left" onclick="scrollSubNav(-200)" title="Scroll left">◀</button>
+    <div class="sub-nav-scroll" id="subNavScroll">
+        <span class="sub-nav-label">🍽️ FOOD</span>
+        <a class="sub-nav-item active" href="#category-WRAP" data-cat="WRAP"><span class="nav-dot"></span><i class="fas fa-burrito nav-icon"></i> Wrap</a>
+        <a class="sub-nav-item" href="#category-BURGER" data-cat="BURGER"><span class="nav-dot"></span><i class="fas fa-burger nav-icon"></i> Burger</a>
+        <a class="sub-nav-item" href="#category-PIZZA" data-cat="PIZZA"><span class="nav-dot"></span><i class="fas fa-pizza-slice nav-icon"></i> Pizza</a>
+        <a class="sub-nav-item" href="#category-WAKE UP CALL" data-cat="WAKE UP CALL"><span class="nav-dot"></span><i class="fas fa-sun nav-icon"></i> Wake Up Call</a>
+        <a class="sub-nav-item" href="#category-SPAGHETTI" data-cat="SPAGHETTI"><span class="nav-dot"></span><i class="fas fa-utensils nav-icon"></i> Spaghetti</a>
+        <a class="sub-nav-item" href="#category-ENJERA" data-cat="ENJERA"><span class="nav-dot"></span><i class="fas fa-plate-wheat nav-icon"></i> Enjera</a>
+        <span class="sub-nav-divider"></span>
+        <span class="sub-nav-label">🥤 DRINKS</span>
+        <a class="sub-nav-item" href="#category-ESPRESSO LAB" data-cat="ESPRESSO LAB"><span class="nav-dot"></span><i class="fas fa-mug-hot nav-icon"></i> Espresso Lab</a>
+        <a class="sub-nav-item" href="#category-STAY COOL" data-cat="STAY COOL"><span class="nav-dot"></span><i class="fas fa-snowflake nav-icon"></i> Stay Cool</a>
+        <a class="sub-nav-item" href="#category-MINT & LIME" data-cat="MINT & LIME"><span class="nav-dot"></span><i class="fas fa-lemon nav-icon"></i> Mint & Lime</a>
+        <a class="sub-nav-item" href="#category-JUICES" data-cat="JUICES"><span class="nav-dot"></span><i class="fas fa-blender nav-icon"></i> Juices</a>
+    </div>
+    <button class="sub-nav-arrow right" onclick="scrollSubNav(200)" title="Scroll right">▶</button>
+</div>
+
+<!-- Menu Content -->
 <div class="section">
     <h2 class="section-title">Our <span>Menu</span></h2>
+    <p class="section-sub" id="totalCount">Loading...</p>
     <div id="menuContainer"></div>
     <div class="promo">📸 Share your brunch on social media & get <strong>5% discount!</strong> @menata_cafe</div>
 </div>
 
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
 <footer>
     <div class="footer-logo">M</div>
-    <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="menu.html">Menu</a>
-        <a href="catering.html">Catering</a>
-        <a href="reviews.html">Reviews</a>
-        <a href="contact.html">Contact</a>
-    </div>
+    <div class="footer-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div>
     <p>© 2026 Menata Café. All rights reserved.</p>
-    <p class="powered">Powered by <a href="https://addispower.pages.dev" target="_blank">AddisPower</a></p>
 </footer>
 
 <script>
@@ -113,140 +186,197 @@ function openMenu(){document.getElementById('sideNav').classList.add('show');doc
 function closeMenu(){document.getElementById('sideNav').classList.remove('show');document.getElementById('overlay').classList.remove('show')}
 
 // ============================================
-// 🖼️ CATEGORY HEADER IMAGES
+// SUB-NAVIGATION SCROLL
 // ============================================
-const categoryImages = {
-    "WRAP": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=120&h=120&fit=crop",
-    "BURGER": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=120&h=120&fit=crop",
-    "PIZZA": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=120&h=120&fit=crop",
-    "WAKE UP CALL": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=120&h=120&fit=crop",
-    "SPAGHETTI": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=120&h=120&fit=crop",
-    "ENJERA": "https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=120&h=120&fit=crop",
-    "ESPRESSO LAB": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=120&h=120&fit=crop",
-    "STAY COOL": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=120&h=120&fit=crop",
-    "MINT & LIME": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=120&h=120&fit=crop",
-    "JUICES": "https://images.unsplash.com/photo-1546173159-315724a31696?w=120&h=120&fit=crop"
-};
+function scrollSubNav(amount){
+    document.getElementById('subNavScroll').scrollBy({left:amount,behavior:'smooth'});
+}
 
-const icons = {
-    "WRAP":"fa-solid fa-burrito",
-    "BURGER":"fa-solid fa-burger",
-    "PIZZA":"fa-solid fa-pizza-slice",
-    "WAKE UP CALL":"fa-solid fa-sun",
-    "SPAGHETTI":"fa-solid fa-utensils",
-    "ENJERA":"fa-solid fa-plate-wheat",
-    "ESPRESSO LAB":"fa-solid fa-mug-hot",
-    "STAY COOL":"fa-solid fa-snowflake",
-    "MINT & LIME":"fa-solid fa-lemon",
-    "JUICES":"fa-solid fa-blender"
-};
+// Show/hide sub-nav arrows based on scroll position
+function updateArrows(){
+    const scroll = document.getElementById('subNavScroll');
+    const leftArrow = document.querySelector('.sub-nav-arrow.left');
+    const rightArrow = document.querySelector('.sub-nav-arrow.right');
+    if(scroll.scrollWidth > scroll.clientWidth){
+        leftArrow.style.display = scroll.scrollLeft > 10 ? 'block' : 'none';
+        rightArrow.style.display = scroll.scrollLeft < scroll.scrollWidth - scroll.clientWidth - 10 ? 'block' : 'none';
+    }else{
+        leftArrow.style.display = 'none';
+        rightArrow.style.display = 'none';
+    }
+}
+
+document.getElementById('subNavScroll').addEventListener('scroll', updateArrows);
+window.addEventListener('resize', updateArrows);
 
 // ============================================
-// 📋 EDITABLE MENU DATA (Each item has an image)
+// ACTIVE SUB-NAV TRACKING ON SCROLL
+// ============================================
+function updateActiveNav(){
+    const categories = document.querySelectorAll('.menu-category');
+    const navItems = document.querySelectorAll('.sub-nav-item');
+    let currentCat = '';
+    
+    categories.forEach(cat=>{
+        const rect = cat.getBoundingClientRect();
+        if(rect.top <= 160){
+            currentCat = cat.id.replace('category-','');
+        }
+    });
+    
+    navItems.forEach(item=>{
+        item.classList.remove('active');
+        if(item.dataset.cat === currentCat){
+            item.classList.add('active');
+            // Auto-scroll sub-nav to keep active item visible
+            item.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+        }
+    });
+}
+
+// ============================================
+// BACK TO TOP BUTTON
+// ============================================
+function updateBackToTop(){
+    const btn = document.getElementById('backToTop');
+    if(window.scrollY > 500){
+        btn.classList.add('show');
+    }else{
+        btn.classList.remove('show');
+    }
+}
+
+window.addEventListener('scroll', ()=>{
+    updateActiveNav();
+    updateBackToTop();
+    updateArrows();
+});
+
+// ============================================
+// MENU DATA (ALL 73 ITEMS WITH BIG IMAGES)
 // ============================================
 const menuData = {
     food: {
         "WRAP": [
-            {name:"Chicken Wrap",price:495,image:"https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200&h=200&fit=crop"},
-            {name:"Beef Wrap",price:495,image:"https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=200&h=200&fit=crop"},
-            {name:"Tuna Wrap",price:400,image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=200&fit=crop"},
-            {name:"Vegetable Wrap",price:300,image:"https://images.unsplash.com/photo-1540914124281-342587941389?w=200&h=200&fit=crop"}
+            {name:"Chicken Wrap",price:495,image:"https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&h=400&fit=crop"},
+            {name:"Beef Wrap",price:495,image:"https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=600&h=400&fit=crop"},
+            {name:"Tuna Wrap",price:400,image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=400&fit=crop"},
+            {name:"Vegetable Wrap",price:300,image:"https://images.unsplash.com/photo-1540914124281-342587941389?w=600&h=400&fit=crop"}
         ],
         "BURGER": [
-            {name:"Special Burger",price:695,image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop"},
-            {name:"Cheese Burger",price:540,image:"https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=200&h=200&fit=crop"},
-            {name:"Beef Burger",price:495,image:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=200&h=200&fit=crop"}
+            {name:"Special Burger",price:695,image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=400&fit=crop"},
+            {name:"Cheese Burger",price:540,image:"https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&h=400&fit=crop"},
+            {name:"Beef Burger",price:495,image:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&h=400&fit=crop"}
         ],
         "PIZZA": [
-            {name:"Menata Pizza",price:695,image:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=200&fit=crop"},
-            {name:"Beef Pizza",price:650,image:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=200&h=200&fit=crop"},
-            {name:"Chicken Pizza",price:650,image:"https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=200&h=200&fit=crop"},
-            {name:"Tuna Pizza",price:495,image:"https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=200&h=200&fit=crop"},
-            {name:"Vegetable Pizza",price:400,image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&h=200&fit=crop"}
+            {name:"Menata Pizza",price:695,image:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&h=400&fit=crop"},
+            {name:"Beef Pizza",price:650,image:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&h=400&fit=crop"},
+            {name:"Chicken Pizza",price:650,image:"https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=600&h=400&fit=crop"},
+            {name:"Tuna Pizza",price:495,image:"https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=600&h=400&fit=crop"},
+            {name:"Vegetable Pizza",price:400,image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&h=400&fit=crop"}
         ],
         "WAKE UP CALL": [
-            {name:"Chechebsa",price:300,image:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=200&h=200&fit=crop"},
-            {name:"Fetira",price:350,image:"https://images.unsplash.com/photo-1504754524776-8f4f0f0f0f0f?w=200&h=200&fit=crop"},
-            {name:"Full",price:250,image:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=200&h=200&fit=crop"},
-            {name:"Scrambled Egg",price:280,image:"https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&h=200&fit=crop"},
-            {name:"Egg Sandwich",price:300,image:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=200&h=200&fit=crop"}
+            {name:"Chechebsa",price:300,image:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&h=400&fit=crop"},
+            {name:"Fetira",price:350,image:"https://images.unsplash.com/photo-1504754524776-8f4f0f0f0f0f?w=600&h=400&fit=crop"},
+            {name:"Full Breakfast",price:250,image:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&h=400&fit=crop"},
+            {name:"Scrambled Egg",price:280,image:"https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&h=400&fit=crop"},
+            {name:"Egg Sandwich",price:300,image:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&h=400&fit=crop"}
         ],
         "SPAGHETTI": [
-            {name:"Tuna Pasta",price:380,image:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=200&h=200&fit=crop"},
-            {name:"Pasta with Meat",price:400,image:"https://images.unsplash.com/photo-1608219992759-8d74ed8d76eb?w=200&h=200&fit=crop"},
-            {name:"Vegetable Pasta",price:280,image:"https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200&h=200&fit=crop"},
-            {name:"Pasta with Tomato Sauce",price:280,image:"https://images.unsplash.com/photo-1589227365533-cee630bd59bd?w=200&h=200&fit=crop"}
+            {name:"Tuna Pasta",price:380,image:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop"},
+            {name:"Pasta with Meat",price:400,image:"https://images.unsplash.com/photo-1608219992759-8d74ed8d76eb?w=600&h=400&fit=crop"},
+            {name:"Vegetable Pasta",price:280,image:"https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=600&h=400&fit=crop"},
+            {name:"Pasta Tomato Sauce",price:280,image:"https://images.unsplash.com/photo-1589227365533-cee630bd59bd?w=600&h=400&fit=crop"}
         ],
         "ENJERA": [
-            {name:"Shiro",price:380,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"},
-            {name:"Fasting Firfir",price:300,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"},
-            {name:"Tibs Firfir",price:450,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"},
-            {name:"Quanta Firfir",price:480,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"}
+            {name:"Shiro",price:380,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=600&h=400&fit=crop"},
+            {name:"Fasting Firfir",price:300,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=600&h=400&fit=crop"},
+            {name:"Tibs Firfir",price:450,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=600&h=400&fit=crop"},
+            {name:"Quanta Firfir",price:480,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=600&h=400&fit=crop"}
         ]
     },
     drinks: {
         "ESPRESSO LAB": [
-            {name:"Macchiato",price:130,image:"https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&h=200&fit=crop"},
-            {name:"Café Latte",price:180,image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&h=200&fit=crop"},
-            {name:"Espresso",price:90,image:"https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&h=200&fit=crop"},
-            {name:"Americano",price:90,image:"https://images.unsplash.com/photo-1551030173-122aabc4489c?w=200&h=200&fit=crop"},
-            {name:"Cappuccino",price:200,image:"https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&h=200&fit=crop"},
-            {name:"Tea",price:65,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop"},
-            {name:"Ginger Tea",price:70,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop"},
-            {name:"Lemon Tea",price:70,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop"},
-            {name:"Green Tea",price:70,image:"https://images.unsplash.com/photo-1556881286-fc6915169721?w=200&h=200&fit=crop"}
+            {name:"Macchiato",price:130,image:"https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=600&h=400&fit=crop"},
+            {name:"Café Latte",price:180,image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&h=400&fit=crop"},
+            {name:"Espresso",price:90,image:"https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&h=400&fit=crop"},
+            {name:"Americano",price:90,image:"https://images.unsplash.com/photo-1551030173-122aabc4489c?w=600&h=400&fit=crop"},
+            {name:"Cappuccino",price:200,image:"https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&h=400&fit=crop"},
+            {name:"Tea",price:65,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=600&h=400&fit=crop"},
+            {name:"Ginger Tea",price:70,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=600&h=400&fit=crop"},
+            {name:"Lemon Tea",price:70,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=600&h=400&fit=crop"},
+            {name:"Green Tea",price:70,image:"https://images.unsplash.com/photo-1556881286-fc6915169721?w=600&h=400&fit=crop"}
         ],
         "STAY COOL": [
-            {name:"Iced Caramel Latte",price:340,image:"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&h=200&fit=crop"},
-            {name:"Iced Chocolate",price:340,image:"https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=200&h=200&fit=crop"},
-            {name:"Strawberry Iced",price:340,image:"https://images.unsplash.com/photo-1558857563-b371033873b8?w=200&h=200&fit=crop"},
-            {name:"Cinnamon Iced Latte",price:400,image:"https://images.unsplash.com/photo-1578314675249-a6910f80cc4f?w=200&h=200&fit=crop"},
-            {name:"Iced Coffee",price:250,image:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200&h=200&fit=crop"}
+            {name:"Iced Caramel Latte",price:340,image:"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&h=400&fit=crop"},
+            {name:"Iced Chocolate",price:340,image:"https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=600&h=400&fit=crop"},
+            {name:"Strawberry Iced",price:340,image:"https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&h=400&fit=crop"},
+            {name:"Cinnamon Iced Latte",price:400,image:"https://images.unsplash.com/photo-1578314675249-a6910f80cc4f?w=600&h=400&fit=crop"},
+            {name:"Iced Coffee",price:250,image:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop"}
         ],
         "MINT & LIME": [
-            {name:"Classic Virgin Mojito",price:400,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"},
-            {name:"Strawberry Mojito",price:380,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"},
-            {name:"Mango Mojito",price:350,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"},
-            {name:"Pineapple Mojito",price:350,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"}
+            {name:"Classic Virgin Mojito",price:400,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&h=400&fit=crop"},
+            {name:"Strawberry Mojito",price:380,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&h=400&fit=crop"},
+            {name:"Mango Mojito",price:350,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&h=400&fit=crop"},
+            {name:"Pineapple Mojito",price:350,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&h=400&fit=crop"}
         ],
         "JUICES": [
-            {name:"Menata Mango",price:450,image:"https://images.unsplash.com/photo-1546173159-315724a31696?w=200&h=200&fit=crop"},
-            {name:"Mix Smoothie",price:450,image:"https://images.unsplash.com/photo-1502741224143-90386d7f8c82?w=200&h=200&fit=crop"},
-            {name:"Banana Date Protein",price:450,image:"https://images.unsplash.com/photo-1577805947695-6d9edfc040e3?w=200&h=200&fit=crop"},
-            {name:"Avocado",price:280,image:"https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=200&h=200&fit=crop"},
-            {name:"Pineapple",price:300,image:"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=200&h=200&fit=crop"},
-            {name:"Papaya",price:280,image:"https://images.unsplash.com/photo-1617114212061-cff2c124c53d?w=200&h=200&fit=crop"},
-            {name:"Mango",price:300,image:"https://images.unsplash.com/photo-1553279768-865429fa0078?w=200&h=200&fit=crop"}
+            {name:"Menata Mango",price:450,image:"https://images.unsplash.com/photo-1546173159-315724a31696?w=600&h=400&fit=crop"},
+            {name:"Mix Smoothie",price:450,image:"https://images.unsplash.com/photo-1502741224143-90386d7f8c82?w=600&h=400&fit=crop"},
+            {name:"Banana Date Protein",price:450,image:"https://images.unsplash.com/photo-1577805947695-6d9edfc040e3?w=600&h=400&fit=crop"},
+            {name:"Avocado Juice",price:280,image:"https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=600&h=400&fit=crop"},
+            {name:"Pineapple Juice",price:300,image:"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=600&h=400&fit=crop"},
+            {name:"Papaya Juice",price:280,image:"https://images.unsplash.com/photo-1617114212061-cff2c124c53d?w=600&h=400&fit=crop"},
+            {name:"Mango Juice",price:300,image:"https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&h=400&fit=crop"}
         ]
     }
 };
 
-// ============================================
-// 🎨 RENDER MENU WITH IMAGES
-// ============================================
-function renderMenu(){
-    let html='<div style="text-align:center;margin-bottom:40px"><h3 style="color:var(--green-light);font-size:2rem">🍽️ Food Menu</h3></div>';
+const categoryImages = {
+    "WRAP":"https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=160&h=160&fit=crop",
+    "BURGER":"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=160&h=160&fit=crop",
+    "PIZZA":"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=160&h=160&fit=crop",
+    "WAKE UP CALL":"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=160&h=160&fit=crop",
+    "SPAGHETTI":"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=160&h=160&fit=crop",
+    "ENJERA":"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=160&h=160&fit=crop",
+    "ESPRESSO LAB":"https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=160&h=160&fit=crop",
+    "STAY COOL":"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=160&h=160&fit=crop",
+    "MINT & LIME":"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=160&h=160&fit=crop",
+    "JUICES":"https://images.unsplash.com/photo-1546173159-315724a31696?w=160&h=160&fit=crop"
+};
 
-    // Render Food
+function renderMenu(){
+    let html='';
+    let totalItems=0;
+
+    // Food
     for(let[cat,items] of Object.entries(menuData.food)){
-        const catImg = categoryImages[cat] || 'https://via.placeholder.com/120/1a3a1a/4CAF50?text='+encodeURIComponent(cat);
+        const catImg = categoryImages[cat] || '';
+        const catId = cat.replace(/\s+/g,'-');
+        totalItems+=items.length;
         html+=`
-        <div class="menu-category">
-            <div class="menu-category-header">
+        <div class="menu-category" id="category-${cat.replace(/\s+/g,'-')}">
+            <div class="category-header">
                 <img src="${catImg}" alt="${cat}" loading="lazy" onerror="this.style.display='none'">
-                <h3><i class="${icons[cat]||'fa-solid fa-utensils'}"></i> ${cat}</h3>
+                <h3>${cat}</h3>
+                <span class="item-count">${items.length} items</span>
             </div>
-            <div class="menu-items">`;
-        
+            <div class="menu-grid">`;
         items.forEach(item=>{
-            const itemImg = item.image || 'https://via.placeholder.com/200/1a3a1a/4CAF50?text='+encodeURIComponent(item.name);
+            const img = item.image || `https://via.placeholder.com/600x400/1a3a1a/4CAF50?text=${encodeURIComponent(item.name)}`;
             html+=`
-            <div class="menu-card-item">
-                <img src="${itemImg}" alt="${item.name}" class="item-img" loading="lazy" onerror="this.parentElement.querySelector('.item-img-placeholder').style.display='flex';this.style.display='none'">
-                <div class="item-img-placeholder" style="display:none"><i class="${icons[cat]||'fas fa-utensils'}"></i></div>
-                <div class="item-info">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">${item.price} ETB</div>
+            <div class="menu-card">
+                <div class="card-img-container">
+                    <img src="${img}" alt="${item.name}" class="card-img" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400/1a3a1a/4CAF50?text=${encodeURIComponent(item.name)}'">
+                    <div class="card-img-overlay"></div>
+                    <span class="card-category">${cat}</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-name">${item.name}</div>
+                    <div class="card-footer">
+                        <span class="card-price">${item.price} <small>ETB</small></span>
+                        <button class="card-btn">Order</button>
+                    </div>
                 </div>
             </div>`;
         });
@@ -254,28 +384,34 @@ function renderMenu(){
     }
 
     html+='<div class="section-divider">🍃 🍃 🍃</div>';
-    html+='<div style="text-align:center;margin-bottom:40px"><h3 style="color:var(--green-light);font-size:2rem">🥤 Drinks Menu</h3></div>';
 
-    // Render Drinks
+    // Drinks
     for(let[cat,items] of Object.entries(menuData.drinks)){
-        const catImg = categoryImages[cat] || 'https://via.placeholder.com/120/1a3a1a/4CAF50?text='+encodeURIComponent(cat);
+        const catImg = categoryImages[cat] || '';
+        totalItems+=items.length;
         html+=`
-        <div class="menu-category">
-            <div class="menu-category-header">
+        <div class="menu-category" id="category-${cat.replace(/\s+/g,'-')}">
+            <div class="category-header">
                 <img src="${catImg}" alt="${cat}" loading="lazy" onerror="this.style.display='none'">
-                <h3><i class="${icons[cat]||'fa-solid fa-martini-glass'}"></i> ${cat}</h3>
+                <h3>${cat}</h3>
+                <span class="item-count">${items.length} items</span>
             </div>
-            <div class="menu-items">`;
-        
+            <div class="menu-grid">`;
         items.forEach(item=>{
-            const itemImg = item.image || 'https://via.placeholder.com/200/1a3a1a/4CAF50?text='+encodeURIComponent(item.name);
+            const img = item.image || `https://via.placeholder.com/600x400/1a3a1a/4CAF50?text=${encodeURIComponent(item.name)}`;
             html+=`
-            <div class="menu-card-item">
-                <img src="${itemImg}" alt="${item.name}" class="item-img" loading="lazy" onerror="this.parentElement.querySelector('.item-img-placeholder').style.display='flex';this.style.display='none'">
-                <div class="item-img-placeholder" style="display:none"><i class="${icons[cat]||'fas fa-utensils'}"></i></div>
-                <div class="item-info">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">${item.price} ETB</div>
+            <div class="menu-card">
+                <div class="card-img-container">
+                    <img src="${img}" alt="${item.name}" class="card-img" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400/1a3a1a/4CAF50?text=${encodeURIComponent(item.name)}'">
+                    <div class="card-img-overlay"></div>
+                    <span class="card-category">${cat}</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-name">${item.name}</div>
+                    <div class="card-footer">
+                        <span class="card-price">${item.price} <small>ETB</small></span>
+                        <button class="card-btn">Order</button>
+                    </div>
                 </div>
             </div>`;
         });
@@ -283,34 +419,31 @@ function renderMenu(){
     }
 
     document.getElementById('menuContainer').innerHTML=html;
+    document.getElementById('totalCount').textContent = `${totalItems} delicious items crafted with love ❤️`;
 }
 
-// Load saved menu from localStorage if exists (from admin panel)
+// Load saved menu
 const saved=localStorage.getItem('menataMenu');
 if(saved){
     try{
         const parsed=JSON.parse(saved);
-        // Merge saved data (preserves images if not overwritten)
         for(let type of ['food','drinks']){
             if(parsed[type]){
                 for(let cat in parsed[type]){
                     if(menuData[type][cat]){
-                        menuData[type][cat] = parsed[type][cat].map((savedItem,i)=>{
-                            const originalItem = menuData[type][cat][i] || {};
-                            return {
-                                name: savedItem.name || originalItem.name,
-                                price: savedItem.price || originalItem.price,
-                                image: savedItem.image || originalItem.image || 'https://via.placeholder.com/200/1a3a1a/4CAF50?text='+encodeURIComponent(savedItem.name||'Item')
-                            };
+                        menuData[type][cat] = parsed[type][cat].map((s,i)=>{
+                            const o=menuData[type][cat][i]||{};
+                            return {name:s.name||o.name,price:s.price||o.price,image:s.image||o.image};
                         });
                     }
                 }
             }
         }
-    }catch(e){console.log('Error loading saved menu:',e)}
+    }catch(e){}
 }
 
 renderMenu();
+updateArrows();
 </script>
 </body>
 </html>
