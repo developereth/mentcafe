@@ -3,89 +3,552 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Edit Menu</title>
+    <title>Admin Panel | Menata Café</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:#0d0d0d;color:#fff;padding:20px}
-        h1{color:#4CAF50;margin-bottom:20px}
-        .section{margin-bottom:30px;background:#1a1a1a;padding:20px;border-radius:12px}
-        .section h3{color:#4CAF50;margin-bottom:15px}
-        .item-row{display:flex;gap:10px;margin-bottom:10px;align-items:center}
-        .item-row input{padding:10px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;flex:1}
-        .item-row input.price-input{max-width:120px}
-        .btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin:5px}
+        body{font-family:'Inter',sans-serif;background:#0d0d0d;color:#fff;line-height:1.5}
+        
+        /* Admin Header */
+        .admin-header{background:#1a1a1a;padding:20px 30px;border-bottom:2px solid #4CAF50;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+        .admin-header h1{color:#4CAF50;font-family:'Playfair Display',serif;font-size:1.8rem}
+        .admin-header .logo-circle{width:44px;height:44px;border-radius:50%;border:2px solid #4CAF50;background:#2E7D32;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:1.2rem}
+        .header-actions{display:flex;gap:10px;flex-wrap:wrap}
+        
+        /* Tabs */
+        .tabs{display:flex;gap:0;background:#1a1a1a;padding:0 30px;border-bottom:1px solid #333;overflow-x:auto}
+        .tab{padding:15px 25px;cursor:pointer;color:#888;font-weight:500;border-bottom:3px solid transparent;transition:.3s;white-space:nowrap;font-size:0.9rem}
+        .tab:hover{color:#fff}
+        .tab.active{color:#4CAF50;border-bottom-color:#4CAF50}
+        .tab i{margin-right:8px}
+
+        /* Content Area */
+        .content{padding:30px;max-width:1200px;margin:0 auto}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+
+        /* Category Section */
+        .category-section{background:#1a1a1a;padding:25px;border-radius:16px;margin-bottom:25px;border:1px solid #2a2a2a}
+        .category-header{display:flex;align-items:center;gap:15px;margin-bottom:20px;flex-wrap:wrap}
+        .category-header h3{color:#4CAF50;font-size:1.3rem;display:flex;align-items:center;gap:10px}
+        .category-header img{width:50px;height:50px;border-radius:10px;object-fit:cover;border:2px solid #4CAF50}
+        .category-header input{flex:1;min-width:200px;padding:10px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;font-size:0.9rem}
+
+        /* Item Row */
+        .items-table{width:100%}
+        .item-row{display:grid;grid-template-columns:80px 2fr 1fr 2fr 40px;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #222;transition:.3s}
+        .item-row:hover{background:rgba(76,175,80,0.05)}
+        .item-row.header-row{color:#888;font-size:0.8rem;text-transform:uppercase;font-weight:600;border-bottom:2px solid #333}
+        .item-row.header-row:hover{background:transparent}
+        .item-row img{width:60px;height:60px;border-radius:8px;object-fit:cover;border:1px solid #333}
+        .item-row .img-placeholder{width:60px;height:60px;border-radius:8px;background:#0d1a0d;display:flex;align-items:center;justify-content:center;color:#4CAF50;font-size:1.5rem}
+        .item-row input{padding:10px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;font-size:0.9rem;width:100%}
+        .item-row input:focus{outline:none;border-color:#4CAF50}
+        .item-row .price-input{text-align:center;font-weight:600;color:#4CAF50}
+
+        /* Buttons */
+        .btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.9rem;transition:.3s;display:inline-flex;align-items:center;gap:8px}
+        .btn:hover{opacity:0.85;transform:translateY(-1px)}
         .btn-add{background:#4CAF50;color:#fff}
-        .btn-del{background:#c0392b;color:#fff}
+        .btn-del{background:#c0392b;color:#fff;padding:8px 12px;border-radius:6px;font-size:1rem}
         .btn-save{background:#2E7D32;color:#fff;padding:15px 40px;font-size:1.1rem}
-        button:hover{opacity:0.85}
+        .btn-export{background:#2196F3;color:#fff}
+        .btn-import{background:#FF9800;color:#fff}
+        .btn-reset{background:#607D8B;color:#fff}
+        .btn-danger{background:#c0392b;color:#fff}
+
+        /* Social Media Section */
+        .social-input-row{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;padding:12px;border-bottom:1px solid #222}
+        .social-input-row label{color:#ccc;font-weight:500;display:flex;align-items:center;gap:8px}
+        .social-input-row label i{font-size:1.2rem;width:25px;text-align:center}
+        .social-input-row input{padding:10px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;width:100%}
+        .social-input-row .status{font-size:0.8rem;padding:5px 10px;border-radius:20px;text-align:center}
+        .status.active{background:rgba(76,175,80,0.2);color:#4CAF50}
+        .status.inactive{background:rgba(255,0,0,0.2);color:#f44336}
+
+        /* Stats */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:30px}
+        .stat-card{background:#1a1a1a;padding:20px;border-radius:12px;border:1px solid #2a2a2a;text-align:center}
+        .stat-card .stat-num{font-size:2.5rem;font-weight:700;color:#4CAF50}
+        .stat-card .stat-label{color:#888;font-size:0.9rem;margin-top:5px}
+
+        /* Toast Notification */
+        .toast{position:fixed;bottom:30px;right:30px;background:#4CAF50;color:#fff;padding:15px 25px;border-radius:10px;font-weight:600;z-index:9999;animation:slideIn 0.3s ease,slideOut 0.3s ease 2.5s forwards;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+        @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}
+
+        /* Responsive */
+        @media(max-width:768px){
+            .admin-header{flex-direction:column;text-align:center}
+            .tabs{padding:0 10px;gap:0}
+            .tab{padding:12px 15px;font-size:0.8rem}
+            .item-row{grid-template-columns:50px 1fr 80px 30px;gap:5px}
+            .item-row .image-input-col{display:none}
+            .item-row.header-row .image-input-col{display:block}
+            .content{padding:15px}
+            .social-input-row{grid-template-columns:1fr;gap:5px}
+        }
     </style>
 </head>
 <body>
-    <h1>🔧 Edit Menu</h1>
-    <div id="adminContainer"></div>
-    <button class="btn-save" onclick="saveMenu()">💾 Save Menu</button>
-    <p style="margin-top:15px;color:#888">After saving, refresh menu.html to see changes</p>
+
+<!-- Admin Header -->
+<div class="admin-header">
+    <div style="display:flex;align-items:center;gap:15px">
+        <div class="logo-circle">M</div>
+        <h1>Menata Café Admin</h1>
+    </div>
+    <div class="header-actions">
+        <button class="btn btn-export" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
+        <button class="btn btn-import" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Import</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+        <button class="btn btn-reset" onclick="resetAll()"><i class="fas fa-undo"></i> Reset</button>
+        <button class="btn btn-save" onclick="saveAll()"><i class="fas fa-save"></i> Save All</button>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('dashboard')"><i class="fas fa-chart-bar"></i> Dashboard</div>
+    <div class="tab" onclick="switchTab('food')"><i class="fas fa-utensils"></i> Food Menu</div>
+    <div class="tab" onclick="switchTab('drinks')"><i class="fas fa-mug-hot"></i> Drinks Menu</div>
+    <div class="tab" onclick="switchTab('social')"><i class="fas fa-share-alt"></i> Social Media</div>
+    <div class="tab" onclick="switchTab('promo')"><i class="fas fa-tag"></i> Promotions</div>
+</div>
+
+<!-- Content -->
+<div class="content">
+    <!-- Dashboard Tab -->
+    <div id="dashboard" class="tab-content active">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num" id="totalFoodItems">0</div>
+                <div class="stat-label">Food Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="totalDrinkItems">0</div>
+                <div class="stat-label">Drink Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="totalCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="socialLinks">0</div>
+                <div class="stat-label">Social Links</div>
+            </div>
+        </div>
+        <div class="category-section">
+            <h3 style="color:#4CAF50;margin-bottom:15px">📋 Quick Guide</h3>
+            <p style="color:#ccc;line-height:2">
+                <strong>1.</strong> Use <strong>Food Menu</strong> & <strong>Drinks Menu</strong> tabs to edit items<br>
+                <strong>2.</strong> Each item has: <strong>Image URL</strong> | <strong>Name</strong> | <strong>Price (ETB)</strong><br>
+                <strong>3.</strong> Use <strong>Social Media</strong> tab to update your links<br>
+                <strong>4.</strong> Use <strong>Promotions</strong> tab to change discount & hashtags<br>
+                <strong>5.</strong> Click <strong>Save All</strong> to save changes to browser storage<br>
+                <strong>6.</strong> Use <strong>Export</strong> to backup your menu as JSON file<br>
+                <strong>7.</strong> After saving, refresh your website pages to see changes
+            </p>
+        </div>
+    </div>
+
+    <!-- Food Menu Tab -->
+    <div id="food" class="tab-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+            <h2 style="color:#4CAF50">🍽️ Food Menu</h2>
+            <button class="btn btn-add" onclick="addCategory('food')"><i class="fas fa-plus"></i> Add Category</button>
+        </div>
+        <div id="foodContainer"></div>
+    </div>
+
+    <!-- Drinks Menu Tab -->
+    <div id="drinks" class="tab-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+            <h2 style="color:#4CAF50">🥤 Drinks Menu</h2>
+            <button class="btn btn-add" onclick="addCategory('drinks')"><i class="fas fa-plus"></i> Add Category</button>
+        </div>
+        <div id="drinksContainer"></div>
+    </div>
+
+    <!-- Social Media Tab -->
+    <div id="social" class="tab-content">
+        <h2 style="color:#4CAF50;margin-bottom:20px">📱 Social Media Links</h2>
+        <div class="category-section">
+            <p style="color:#888;margin-bottom:20px">Update your social media profile links. Leave blank to hide.</p>
+            <div id="socialContainer"></div>
+        </div>
+    </div>
+
+    <!-- Promotions Tab -->
+    <div id="promo" class="tab-content">
+        <h2 style="color:#4CAF50;margin-bottom:20px">🏷️ Promotions Settings</h2>
+        <div class="category-section">
+            <div style="display:grid;gap:15px;max-width:500px">
+                <div>
+                    <label style="color:#ccc;display:block;margin-bottom:5px">Discount Percentage (%)</label>
+                    <input type="number" id="discountPercent" value="5" min="0" max="100" style="padding:12px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;width:100%;font-size:1.1rem">
+                </div>
+                <div>
+                    <label style="color:#ccc;display:block;margin-bottom:5px">Primary Hashtag</label>
+                    <input type="text" id="hashtag1" value="#MenataMoments" style="padding:12px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;width:100%">
+                </div>
+                <div>
+                    <label style="color:#ccc;display:block;margin-bottom:5px">Secondary Hashtag</label>
+                    <input type="text" id="hashtag2" value="#MenataCafe" style="padding:12px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;width:100%">
+                </div>
+                <div>
+                    <label style="color:#ccc;display:block;margin-bottom:5px">Social Handle</label>
+                    <input type="text" id="socialHandle" value="@menata_cafe" style="padding:12px;border-radius:8px;border:1px solid #333;background:#0d0d0d;color:#fff;width:100%">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification Container -->
+<div id="toastContainer"></div>
 
 <script>
-const menuData = {
+// ============================================
+// 📦 DATA STORAGE
+// ============================================
+const STORAGE_KEY = 'menataMenu';
+const SOCIAL_KEY = 'menataSocial';
+const PROMO_KEY = 'menataPromo';
+
+// Default Menu Data
+const defaultMenuData = {
     food: {
-        "WRAP":[{name:"Chicken Wrap",price:495},{name:"Beef Wrap",price:495},{name:"Tuna Wrap",price:400},{name:"Vegetable Wrap",price:300}],
-        "BURGER":[{name:"Special Burger",price:695},{name:"Cheese Burger",price:540},{name:"Beef Burger",price:495}],
-        "PIZZA":[{name:"Menata Pizza",price:695},{name:"Beef Pizza",price:650},{name:"Chicken Pizza",price:650},{name:"Tuna Pizza",price:495},{name:"Vegetable Pizza",price:400}],
-        "WAKE UP CALL":[{name:"Chechebsa",price:300},{name:"Fetira",price:350},{name:"Full",price:250},{name:"Scrambled Egg",price:280},{name:"Egg Sandwich",price:300}],
-        "SPAGHETTI":[{name:"Tuna Pasta",price:380},{name:"Pasta with Meat",price:400},{name:"Vegetable Pasta",price:280},{name:"Pasta with Tomato Sauce",price:280}],
-        "ENJERA":[{name:"Shiro",price:380},{name:"Fasting Firfir",price:300},{name:"Tibs Firfir",price:450},{name:"Quanta Firfir",price:480}]
+        "WRAP": [
+            {name:"Chicken Wrap",price:495,image:"https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=200&h=200&fit=crop"},
+            {name:"Beef Wrap",price:495,image:"https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=200&h=200&fit=crop"},
+            {name:"Tuna Wrap",price:400,image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=200&fit=crop"},
+            {name:"Vegetable Wrap",price:300,image:"https://images.unsplash.com/photo-1540914124281-342587941389?w=200&h=200&fit=crop"}
+        ],
+        "BURGER": [
+            {name:"Special Burger",price:695,image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop"},
+            {name:"Cheese Burger",price:540,image:"https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=200&h=200&fit=crop"},
+            {name:"Beef Burger",price:495,image:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=200&h=200&fit=crop"}
+        ],
+        "PIZZA": [
+            {name:"Menata Pizza",price:695,image:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=200&fit=crop"},
+            {name:"Beef Pizza",price:650,image:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=200&h=200&fit=crop"},
+            {name:"Chicken Pizza",price:650,image:"https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=200&h=200&fit=crop"},
+            {name:"Tuna Pizza",price:495,image:"https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=200&h=200&fit=crop"},
+            {name:"Vegetable Pizza",price:400,image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&h=200&fit=crop"}
+        ],
+        "WAKE UP CALL": [
+            {name:"Chechebsa",price:300,image:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=200&h=200&fit=crop"},
+            {name:"Fetira",price:350,image:"https://images.unsplash.com/photo-1504754524776-8f4f0f0f0f0f?w=200&h=200&fit=crop"},
+            {name:"Full",price:250,image:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=200&h=200&fit=crop"},
+            {name:"Scrambled Egg",price:280,image:"https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&h=200&fit=crop"},
+            {name:"Egg Sandwich",price:300,image:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=200&h=200&fit=crop"}
+        ],
+        "SPAGHETTI": [
+            {name:"Tuna Pasta",price:380,image:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=200&h=200&fit=crop"},
+            {name:"Pasta with Meat",price:400,image:"https://images.unsplash.com/photo-1608219992759-8d74ed8d76eb?w=200&h=200&fit=crop"},
+            {name:"Vegetable Pasta",price:280,image:"https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200&h=200&fit=crop"},
+            {name:"Pasta with Tomato Sauce",price:280,image:"https://images.unsplash.com/photo-1589227365533-cee630bd59bd?w=200&h=200&fit=crop"}
+        ],
+        "ENJERA": [
+            {name:"Shiro",price:380,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"},
+            {name:"Fasting Firfir",price:300,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"},
+            {name:"Tibs Firfir",price:450,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"},
+            {name:"Quanta Firfir",price:480,image:"https://images.unsplash.com/photo-1511910849308-6f2a5e4dbd2b?w=200&h=200&fit=crop"}
+        ]
     },
     drinks: {
-        "ESPRESSO LAB":[{name:"Macchiato",price:130},{name:"Café Latte",price:180},{name:"Espresso",price:90},{name:"Americano",price:90},{name:"Cappuccino",price:200},{name:"Tea",price:65},{name:"Ginger Tea",price:70},{name:"Lemon Tea",price:70},{name:"Green Tea",price:70}],
-        "STAY COOL":[{name:"Iced Caramel Latte",price:340},{name:"Iced Chocolate",price:340},{name:"Strawberry Iced",price:340},{name:"Cinnamon Iced Latte",price:400},{name:"Iced Coffee",price:250}],
-        "MINT & LIME":[{name:"Classic Virgin Mojito",price:400},{name:"Strawberry Mojito",price:380},{name:"Mango Mojito",price:350},{name:"Pineapple Mojito",price:350}],
-        "JUICES":[{name:"Menata Mango",price:450},{name:"Mix Smoothie",price:450},{name:"Banana Date Protein",price:450},{name:"Avocado",price:280},{name:"Pineapple",price:300},{name:"Papaya",price:280},{name:"Mango",price:300}]
+        "ESPRESSO LAB": [
+            {name:"Macchiato",price:130,image:"https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&h=200&fit=crop"},
+            {name:"Café Latte",price:180,image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&h=200&fit=crop"},
+            {name:"Espresso",price:90,image:"https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&h=200&fit=crop"},
+            {name:"Americano",price:90,image:"https://images.unsplash.com/photo-1551030173-122aabc4489c?w=200&h=200&fit=crop"},
+            {name:"Cappuccino",price:200,image:"https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&h=200&fit=crop"},
+            {name:"Tea",price:65,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop"},
+            {name:"Ginger Tea",price:70,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop"},
+            {name:"Lemon Tea",price:70,image:"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop"},
+            {name:"Green Tea",price:70,image:"https://images.unsplash.com/photo-1556881286-fc6915169721?w=200&h=200&fit=crop"}
+        ],
+        "STAY COOL": [
+            {name:"Iced Caramel Latte",price:340,image:"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&h=200&fit=crop"},
+            {name:"Iced Chocolate",price:340,image:"https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=200&h=200&fit=crop"},
+            {name:"Strawberry Iced",price:340,image:"https://images.unsplash.com/photo-1558857563-b371033873b8?w=200&h=200&fit=crop"},
+            {name:"Cinnamon Iced Latte",price:400,image:"https://images.unsplash.com/photo-1578314675249-a6910f80cc4f?w=200&h=200&fit=crop"},
+            {name:"Iced Coffee",price:250,image:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200&h=200&fit=crop"}
+        ],
+        "MINT & LIME": [
+            {name:"Classic Virgin Mojito",price:400,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"},
+            {name:"Strawberry Mojito",price:380,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"},
+            {name:"Mango Mojito",price:350,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"},
+            {name:"Pineapple Mojito",price:350,image:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=200&h=200&fit=crop"}
+        ],
+        "JUICES": [
+            {name:"Menata Mango",price:450,image:"https://images.unsplash.com/photo-1546173159-315724a31696?w=200&h=200&fit=crop"},
+            {name:"Mix Smoothie",price:450,image:"https://images.unsplash.com/photo-1502741224143-90386d7f8c82?w=200&h=200&fit=crop"},
+            {name:"Banana Date Protein",price:450,image:"https://images.unsplash.com/photo-1577805947695-6d9edfc040e3?w=200&h=200&fit=crop"},
+            {name:"Avocado",price:280,image:"https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=200&h=200&fit=crop"},
+            {name:"Pineapple",price:300,image:"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=200&h=200&fit=crop"},
+            {name:"Papaya",price:280,image:"https://images.unsplash.com/photo-1617114212061-cff2c124c53d?w=200&h=200&fit=crop"},
+            {name:"Mango",price:300,image:"https://images.unsplash.com/photo-1553279768-865429fa0078?w=200&h=200&fit=crop"}
+        ]
     }
 };
 
-const saved=localStorage.getItem('menataMenu');
-if(saved){try{Object.assign(menuData,JSON.parse(saved))}catch(e){}}
+const defaultSocialData = {
+    instagram: {url:"https://instagram.com/menata_cafe", active:true},
+    tiktok: {url:"https://tiktok.com/@menata_cafe", active:true},
+    telegram: {url:"https://t.me/menata_cafe", active:true},
+    whatsapp: {url:"https://wa.me/251912345678", active:true},
+    facebook: {url:"https://facebook.com/menatacafe", active:true}
+};
 
-function renderAdmin(){
+const defaultPromoData = {
+    discountPercent: 5,
+    hashtag1: "#MenataMoments",
+    hashtag2: "#MenataCafe",
+    socialHandle: "@menata_cafe"
+};
+
+// Load data
+let menuData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(defaultMenuData));
+let socialData = JSON.parse(localStorage.getItem(SOCIAL_KEY)) || JSON.parse(JSON.stringify(defaultSocialData));
+let promoData = JSON.parse(localStorage.getItem(PROMO_KEY)) || JSON.parse(JSON.stringify(defaultPromoData));
+
+// ============================================
+// 🎨 RENDER FUNCTIONS
+// ============================================
+function renderMenuType(type){
+    const container = document.getElementById(type+'Container');
+    if(!container) return;
     let html='';
-    for(let type of ['food','drinks']){
-        html+=`<h2 style="color:#4CAF50;margin:20px 0">${type.toUpperCase()}</h2>`;
-        for(let[cat,items] of Object.entries(menuData[type])){
-            html+=`<div class="section"><h3>${cat} <button class="btn btn-add" onclick="addItem('${type}','${cat}')">+ Add</button></h3>`;
-            items.forEach((item,i)=>{
-                html+=`<div class="item-row">
-                    <input value="${item.name}" onchange="updateItem('${type}','${cat}',${i},'name',this.value)">
-                    <input class="price-input" type="number" value="${item.price}" onchange="updateItem('${type}','${cat}',${i},'price',parseInt(this.value))">
-                    <button class="btn btn-del" onclick="deleteItem('${type}','${cat}',${i})">✕</button>
+    for(let[cat,items] of Object.entries(menuData[type])){
+        html+=`
+        <div class="category-section">
+            <div class="category-header">
+                <h3>📂 ${cat}</h3>
+                <input type="text" value="${cat}" placeholder="Category Name" onchange="renameCategory('${type}','${cat}',this.value)" style="max-width:300px">
+                <button class="btn btn-add" onclick="addItem('${type}','${cat}')"><i class="fas fa-plus"></i> Add Item</button>
+                <button class="btn btn-danger" onclick="deleteCategory('${type}','${cat}')"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+            <div class="items-table">
+                <div class="item-row header-row">
+                    <span>Image</span>
+                    <span>Item Name</span>
+                    <span>Price (ETB)</span>
+                    <span class="image-input-col">Image URL</span>
+                    <span></span>
                 </div>`;
-            });
-            html+='</div>';
-        }
+        items.forEach((item,i)=>{
+            const imgSrc = item.image || '';
+            html+=`
+                <div class="item-row">
+                    ${imgSrc ? `<img src="${imgSrc}" alt="${item.name}" onerror="this.parentElement.querySelector('.img-placeholder').style.display='flex';this.style.display='none'"><div class="img-placeholder" style="display:none"><i class="fas fa-image"></i></div>` : '<div class="img-placeholder"><i class="fas fa-image"></i></div>'}
+                    <input type="text" value="${item.name}" placeholder="Item name" onchange="updateItem('${type}','${cat}',${i},'name',this.value)">
+                    <input type="number" value="${item.price}" class="price-input" placeholder="Price" onchange="updateItem('${type}','${cat}',${i},'price',parseInt(this.value)||0)">
+                    <input type="text" value="${item.image||''}" class="image-input-col" placeholder="Image URL (optional)" onchange="updateItem('${type}','${cat}',${i},'image',this.value);this.closest('.item-row').querySelector('img').src=this.value">
+                    <button class="btn btn-del" onclick="deleteItem('${type}','${cat}',${i})" title="Delete">✕</button>
+                </div>`;
+        });
+        html+='</div></div>';
     }
-    document.getElementById('adminContainer').innerHTML=html;
+    container.innerHTML=html || '<p style="color:#888;text-align:center;padding:40px">No categories yet. Click "Add Category" to create one.</p>';
 }
 
+function renderSocial(){
+    const container = document.getElementById('socialContainer');
+    const platformIcons = {
+        instagram: {icon:'fab fa-instagram', color:'#E4405F'},
+        tiktok: {icon:'fab fa-tiktok', color:'#ff0050'},
+        telegram: {icon:'fab fa-telegram-plane', color:'#0088cc'},
+        whatsapp: {icon:'fab fa-whatsapp', color:'#25D366'},
+        facebook: {icon:'fab fa-facebook-f', color:'#1877F2'}
+    };
+    let html='';
+    for(let[platform,data] of Object.entries(socialData)){
+        const pi = platformIcons[platform] || {icon:'fas fa-link', color:'#fff'};
+        html+=`
+        <div class="social-input-row">
+            <label><i class="${pi.icon}" style="color:${pi.color}"></i> ${platform.charAt(0).toUpperCase()+platform.slice(1)}</label>
+            <input type="text" value="${data.url}" placeholder="https://..." onchange="socialData['${platform}'].url=this.value">
+            <span class="status ${data.active?'active':'inactive'}" onclick="socialData['${platform}'].active=!socialData['${platform}'].active;renderSocial()" style="cursor:pointer">${data.active?'Active':'Hidden'}</span>
+        </div>`;
+    }
+    container.innerHTML=html;
+}
+
+function renderPromo(){
+    document.getElementById('discountPercent').value = promoData.discountPercent;
+    document.getElementById('hashtag1').value = promoData.hashtag1;
+    document.getElementById('hashtag2').value = promoData.hashtag2;
+    document.getElementById('socialHandle').value = promoData.socialHandle;
+}
+
+function updateDashboard(){
+    let foodCount=0, drinkCount=0;
+    for(let cat in menuData.food) foodCount+=menuData.food[cat].length;
+    for(let cat in menuData.drinks) drinkCount+=menuData.drinks[cat].length;
+    const totalCat = Object.keys(menuData.food).length + Object.keys(menuData.drinks).length;
+    const activeSocial = Object.values(socialData).filter(s=>s.active).length;
+    
+    document.getElementById('totalFoodItems').textContent = foodCount;
+    document.getElementById('totalDrinkItems').textContent = drinkCount;
+    document.getElementById('totalCategories').textContent = totalCat;
+    document.getElementById('socialLinks').textContent = activeSocial;
+}
+
+// ============================================
+// ✏️ EDIT FUNCTIONS
+// ============================================
 function updateItem(type,cat,index,field,value){
     menuData[type][cat][index][field]=value;
 }
 
 function deleteItem(type,cat,index){
-    menuData[type][cat].splice(index,1);
-    renderAdmin();
+    if(confirm('Delete this item?')){
+        menuData[type][cat].splice(index,1);
+        renderMenuType(type);
+        updateDashboard();
+        showToast('Item deleted');
+    }
 }
 
 function addItem(type,cat){
-    menuData[type][cat].push({name:"New Item",price:0});
-    renderAdmin();
+    menuData[type][cat].push({name:"New Item",price:0,image:""});
+    renderMenuType(type);
+    updateDashboard();
+    showToast('New item added');
 }
 
-function saveMenu(){
-    localStorage.setItem('menataMenu',JSON.stringify(menuData));
-    alert('Menu saved!');
+function addCategory(type){
+    const catName = prompt('Enter category name:');
+    if(catName && !menuData[type][catName]){
+        menuData[type][catName] = [];
+        renderMenuType(type);
+        updateDashboard();
+        showToast('Category added: '+catName);
+    }else if(catName){
+        showToast('Category already exists!');
+    }
 }
 
-renderAdmin();
+function renameCategory(type,oldName,newName){
+    if(newName && newName!==oldName && !menuData[type][newName]){
+        menuData[type][newName] = menuData[type][oldName];
+        delete menuData[type][oldName];
+        renderMenuType(type);
+        updateDashboard();
+        showToast('Category renamed');
+    }
+}
+
+function deleteCategory(type,cat){
+    if(confirm(`Delete entire category "${cat}" and all its items?`)){
+        delete menuData[type][cat];
+        renderMenuType(type);
+        updateDashboard();
+        showToast('Category deleted');
+    }
+}
+
+// ============================================
+// 💾 SAVE, EXPORT, IMPORT
+// ============================================
+function saveAll(){
+    // Save promo data
+    promoData.discountPercent = parseInt(document.getElementById('discountPercent').value)||5;
+    promoData.hashtag1 = document.getElementById('hashtag1').value;
+    promoData.hashtag2 = document.getElementById('hashtag2').value;
+    promoData.socialHandle = document.getElementById('socialHandle').value;
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(menuData));
+    localStorage.setItem(SOCIAL_KEY, JSON.stringify(socialData));
+    localStorage.setItem(PROMO_KEY, JSON.stringify(promoData));
+    updateDashboard();
+    showToast('✅ All changes saved successfully!');
+}
+
+function exportData(){
+    const exportObj = {menuData, socialData, promoData, exportDate: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(exportObj,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'menata-cafe-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📥 Backup downloaded');
+}
+
+function importData(event){
+    const file = event.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e){
+        try{
+            const imported = JSON.parse(e.target.result);
+            if(imported.menuData) menuData = imported.menuData;
+            if(imported.socialData) socialData = imported.socialData;
+            if(imported.promoData) promoData = imported.promoData;
+            saveAll();
+            refreshAll();
+            showToast('✅ Data imported successfully!');
+        }catch(err){
+            showToast('❌ Invalid file format');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+function resetAll(){
+    if(confirm('⚠️ Reset ALL data to defaults? This cannot be undone!')){
+        menuData = JSON.parse(JSON.stringify(defaultMenuData));
+        socialData = JSON.parse(JSON.stringify(defaultSocialData));
+        promoData = JSON.parse(JSON.stringify(defaultPromoData));
+        saveAll();
+        refreshAll();
+        showToast('🔄 All data reset to defaults');
+    }
+}
+
+// ============================================
+// 🔄 UI FUNCTIONS
+// ============================================
+function switchTab(tabName){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    document.querySelector(`.tab[onclick*="${tabName}"]`).classList.add('active');
+    document.getElementById(tabName).classList.add('active');
+    if(tabName==='food') renderMenuType('food');
+    if(tabName==='drinks') renderMenuType('drinks');
+    if(tabName==='social') renderSocial();
+    if(tabName==='promo') renderPromo();
+    if(tabName==='dashboard') updateDashboard();
+}
+
+function refreshAll(){
+    renderMenuType('food');
+    renderMenuType('drinks');
+    renderSocial();
+    renderPromo();
+    updateDashboard();
+}
+
+function showToast(message){
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(()=>toast.remove(), 3000);
+}
+
+// Auto-save on changes
+window.addEventListener('beforeunload', ()=>saveAll());
+
+// Initialize
+refreshAll();
 </script>
 </body>
 </html>
