@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering | Menata Café</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--green:#2E7D32;--green-light:#4CAF50;--green-dark:#1B5E20;--bg:#0d0d0d;--dark:#1a1a1a}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff}
+        nav{background:var(--dark);padding:12px 20px;border-bottom:2px solid var(--green-light);position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center}
+        .logo-circle{width:44px;height:44px;border-radius:50%;border:2px solid var(--green-light);background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:1.2rem;text-decoration:none}
+        .nav-links{display:flex;gap:24px;list-style:none}
+        .nav-links a{color:#bbb;text-decoration:none;font-size:0.9rem;font-weight:500;transition:.3s}
+        .nav-links a:hover,.nav-links a.active{color:var(--green-light)}
+        .menu-btn{display:none;background:none;border:none;color:var(--green-light);font-size:1.7rem;cursor:pointer}
+        .side-nav{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--dark);z-index:1002;transition:.35s;padding:70px 30px 30px;border-left:1px solid #333}
+        .side-nav.show{right:0}
+        .side-nav a{display:block;color:#ccc;text-decoration:none;padding:14px 0;font-size:1.1rem;border-bottom:1px solid #2a2a2a}
+        .side-nav a:hover{color:var(--green-light)}
+        .side-nav .close-btn{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--green-light);font-size:1.8rem;cursor:pointer}
+        .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:1001}
+        .overlay.show{display:block}
+        .hero{background:linear-gradient(rgba(0,0,0,0.8),rgba(0,30,0,0.6)),url('https://images.unsplash.com/photo-1555244162-803834f70033?w=1600') center/cover;padding:120px 20px;text-align:center}
+        .hero h1{font-family:'Playfair Display',serif;font-size:3rem;color:var(--green-light)}
+        .hero p{color:#ddd;margin:15px 0 30px;font-size:1.1rem}
+        .btn{display:inline-block;background:var(--green);color:#fff;padding:15px 40px;border-radius:50px;text-decoration:none;font-weight:700;transition:.3s}
+        .btn:hover{background:var(--green-light)}
+        .section{padding:60px 20px;max-width:900px;margin:0 auto}
+        .section-title{font-family:'Playfair Display',serif;font-size:2.4rem;text-align:center;margin-bottom:40px}
+        .section-title span{color:var(--green-light)}
+        .package{background:var(--dark);padding:30px;border-radius:16px;border:1px solid #2a2a2a;margin-bottom:20px;transition:.3s}
+        .package:hover{border-color:var(--green)}
+        .package h3{color:var(--green-light);font-size:1.4rem;margin-bottom:10px}
+        .package .price{font-size:2rem;font-weight:700;color:var(--green-light)}
+        .package ul{list-style:none;margin:15px 0}
+        .package ul li{padding:8px 0;color:#ccc}
+        .package ul li i{color:var(--green-light);margin-right:8px}
+        footer{background:var(--dark);text-align:center;padding:35px 20px;border-top:1px solid #222;margin-top:40px}
+        footer .footer-logo{width:50px;height:50px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;margin:0 auto 12px;font-size:1.3rem}
+        footer p{color:#888;font-size:0.85rem}
+        .footer-links{display:flex;gap:25px;justify-content:center;flex-wrap:wrap;margin:15px 0}
+        .footer-links a{color:#aaa;text-decoration:none;font-size:0.85rem}
+        .footer-links a:hover{color:var(--green-light)}
+        @media(max-width:768px){.nav-links{display:none}.menu-btn{display:block}}
+    </style>
+</head>
+<body>
+<nav>
+    <a href="index.html" class="logo-circle">M</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="catering.html" class="active">Catering</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="menu-btn" onclick="openMenu()"><i class="fas fa-bars"></i></button>
+</nav>
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+<div class="side-nav" id="sideNav">
+    <button class="close-btn" onclick="closeMenu()"><i class="fas fa-times"></i></button>
+    <a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="hero"><h1>Catering Services</h1><p>Bring Menata Café to your events</p><a href="contact.html" class="btn">Book Now</a></div>
+
+<div class="section">
+    <h2 class="section-title">Catering <span>Packages</span></h2>
+    <div class="package"><h3>🥂 Basic Package</h3><div class="price">15,000 ETB</div><p style="color:#aaa">Up to 20 guests</p><ul><li><i class="fas fa-check"></i> Coffee & Tea Station</li><li><i class="fas fa-check"></i> 3 Main Dishes</li><li><i class="fas fa-check"></i> Basic Setup</li></ul></div>
+    <div class="package"><h3>🌟 Premium Package</h3><div class="price">35,000 ETB</div><p style="color:#aaa">Up to 50 guests</p><ul><li><i class="fas fa-check"></i> Full Coffee Ceremony</li><li><i class="fas fa-check"></i> 6 Main Dishes + Appetizers</li><li><i class="fas fa-check"></i> Professional Setup & Service</li></ul></div>
+    <div class="package"><h3>👑 Custom Package</h3><div class="price">Contact Us</div><p style="color:#aaa">50+ guests</p><ul><li><i class="fas fa-check"></i> Custom Menu</li><li><i class="fas fa-check"></i> Full Event Catering</li><li><i class="fas fa-check"></i> Dedicated Event Manager</li></ul></div>
+</div>
+
+<footer>
+    <div class="footer-logo">M</div>
+    <div class="footer-links"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="catering.html">Catering</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div>
+    <p>© 2026 Menata Café</p>
+</footer>
+<script>
+function openMenu(){document.getElementById('sideNav').classList.add('show');document.getElementById('overlay').classList.add('show')}
+function closeMenu(){document.getElementById('sideNav').classList.remove('show');document.getElementById('overlay').classList.remove('show')}
+</script>
+</body>
+</html>
