@@ -1,0 +1,10 @@
+services:
+  site:
+    image: node:22-bookworm
+    working_dir: /workspace
+    network_mode: host
+    environment:
+      IS_ALLOY: ${IS_ALLOY:-false}
+    volumes:
+      - .:/workspace
+    command: bash -lc "npx --yes http-server . -p 3000 -a 0.0.0.0 -c-1"
